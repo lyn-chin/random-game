@@ -1,0 +1,1265 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>little luck club.</title>
+  <link rel="icon" type="image/png" href=&#9856;>
+
+
+  <!-- Pixel font + clean font -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+
+  <!-- Website favicon -->
+  <link rel="icon" type="image/svg+xml"
+    href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Ctext y='.9em' font-size='90'%3E🎲%3C/text%3E%3C/svg%3E">
+
+  <style>
+    :root {
+      --blue: #DCEBFA;
+      --pink: #F6DDE5;
+      --purple: #E9E1F5;
+      --cream: #FFF8EC;
+      --dark: #53677F;
+      --muted: #91A0B2;
+      --white: #FFFFFF;
+      --shadow: 4px 4px 0px #D7DCE5;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background: var(--cream);
+      color: var(--dark);
+      font-family: 'Nunito', sans-serif;
+      min-height: 100vh;
+    }
+
+    button,
+    select {
+      font: inherit;
+      cursor: pointer;
+    }
+
+    button {
+      border: none;
+      color: inherit;
+    }
+
+    .pixel {
+      font-family: 'DotGothic16', monospace;
+    }
+
+    header {
+      max-width: 900px;
+      margin: auto;
+      padding: 24px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .logo {
+      font-family: 'DotGothic16', monospace;
+      font-size: 19px;
+      font-weight: bold;
+      color: var(--dark);
+      cursor: pointer;
+    }
+
+    .header-actions {
+      display: flex;
+      gap: 10px;
+    }
+
+    .small-btn {
+      background: white;
+      border: 2px solid #E7E6E2;
+      border-radius: 8px;
+      padding: 7px 12px;
+      font-size: 12px;
+      font-weight: 800;
+      transition: .2s;
+    }
+
+    .small-btn:hover {
+      transform: translateY(-2px);
+    }
+
+    main {
+      max-width: 850px;
+      margin: auto;
+      padding: 30px 24px 70px;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 35px 0 40px;
+    }
+
+    .hero-art {
+      font-size: 65px;
+      margin-bottom: 18px;
+      animation: float 3s ease-in-out infinite;
+      image-rendering: pixelated;
+    }
+
+    @keyframes float {
+
+      0%,
+      100% {
+        transform: translateY(0);
+      }
+
+      50% {
+        transform: translateY(-9px);
+      }
+    }
+
+    .hero h1 {
+      font-family: 'DotGothic16', monospace;
+      font-size: clamp(24px, 5vw, 36px);
+      margin-bottom: 12px;
+    }
+
+    .hero p {
+      font-size: 14px;
+      color: var(--muted);
+    }
+
+    .section-title {
+      font-family: 'DotGothic16', monospace;
+      font-size: 13px;
+      margin-bottom: 17px;
+      letter-spacing: 1px;
+    }
+
+    .game-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+
+    .game-card {
+      min-width: 0;
+      border-radius: 13px;
+      padding: 22px 15px;
+      text-align: center;
+      cursor: pointer;
+      transition: .2s;
+      border: 2px solid rgba(255, 255, 255, .8);
+    }
+
+    .game-card:hover {
+      transform: translateY(-5px);
+      box-shadow: var(--shadow);
+    }
+
+    .game-card:nth-child(1) {
+      background: var(--blue);
+    }
+
+    .game-card:nth-child(2) {
+      background: var(--pink);
+    }
+
+    .game-card:nth-child(3) {
+      background: var(--purple);
+    }
+
+    .game-icon {
+      font-size: 48px;
+      margin-bottom: 16px;
+    }
+
+    .game-card h3 {
+      font-size: 15px;
+      font-weight: 800;
+      margin-bottom: 6px;
+    }
+
+    .game-card p {
+      font-size: 11px;
+      color: #7D8A9B;
+    }
+
+    .game-count {
+      margin-top: 15px;
+      font-size: 10px;
+      color: #8593A5;
+    }
+
+    .extras {
+      display: flex;
+      justify-content: center;
+      gap: 12px;
+      margin-top: 28px;
+      flex-wrap: wrap;
+    }
+
+    .action-btn {
+      padding: 11px 19px;
+      border-radius: 8px;
+      background: white;
+      border: 2px solid #E7E6E2;
+      font-size: 12px;
+      font-weight: 800;
+      transition: .2s;
+    }
+
+    .action-btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 3px 3px 0 #D7DCE5;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      font-size: 11px;
+      color: #A4AAB3;
+    }
+
+    /* GAME SCREEN */
+
+    #gameScreen {
+      display: none;
+      text-align: center;
+      animation: appear .3s ease;
+    }
+
+    @keyframes appear {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .back-btn {
+      display: block;
+      background: transparent;
+      font-size: 12px;
+      font-weight: 800;
+      margin-bottom: 35px;
+      color: var(--muted);
+    }
+
+    .back-btn:hover {
+      color: var(--dark);
+    }
+
+    .game-title {
+      font-family: 'DotGothic16', monospace;
+      font-size: 24px;
+      margin-bottom: 8px;
+    }
+
+    .game-subtitle {
+      color: var(--muted);
+      font-size: 13px;
+      margin-bottom: 35px;
+    }
+
+    .play-area {
+      background: white;
+      border: 2px solid #E9E6DF;
+      border-radius: 14px;
+      padding: 30px 20px;
+      min-height: 260px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .primary-btn {
+      background: var(--blue);
+      padding: 12px 30px;
+      border-radius: 8px;
+      font-weight: 800;
+      font-size: 13px;
+      color: var(--dark);
+      border: 2px solid #C9DDED;
+      transition: .2s;
+    }
+
+    .primary-btn:hover {
+      transform: translateY(-3px);
+      box-shadow: 3px 3px 0 #C9DDED;
+    }
+
+    .result {
+      font-weight: 800;
+      font-size: 17px;
+      min-height: 26px;
+    }
+
+    .result-detail {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    /* DICE */
+
+    .dice-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    select {
+      padding: 8px 13px;
+      background: var(--cream);
+      color: var(--dark);
+      border: 2px solid #E7E6E2;
+      border-radius: 7px;
+      outline: none;
+    }
+
+    .dice-container {
+      display: flex;
+      justify-content: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      max-width: 430px;
+    }
+
+    .die {
+      width: 65px;
+      height: 65px;
+      background: var(--blue);
+      border: 3px solid #B8CFE5;
+      border-radius: 10px;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      grid-template-rows: repeat(3, 1fr);
+      padding: 8px;
+      gap: 2px;
+      box-shadow: 3px 3px 0 #D7DCE5;
+    }
+
+    .pip {
+      width: 9px;
+      height: 9px;
+      background: var(--dark);
+      border-radius: 50%;
+      align-self: center;
+      justify-self: center;
+    }
+
+    .die.rolling {
+      animation: shake .15s infinite;
+    }
+
+    @keyframes shake {
+      0% {
+        transform: rotate(-8deg);
+      }
+
+      50% {
+        transform: rotate(8deg);
+      }
+
+      100% {
+        transform: rotate(-8deg);
+      }
+    }
+
+    .total {
+      font-family: 'DotGothic16', monospace;
+      font-size: 17px;
+    }
+
+    /* ROCK PAPER SCISSORS */
+
+    .rps-options {
+      display: flex;
+      justify-content: center;
+      gap: 15px;
+    }
+
+    .choice-btn {
+      background: var(--pink);
+      width: 85px;
+      height: 85px;
+      border: 2px solid #E9C7D2;
+      border-radius: 12px;
+      font-size: 38px;
+      transition: .2s;
+    }
+
+    .choice-btn:hover {
+      transform: translateY(-5px);
+      box-shadow: 3px 3px 0 #E9C7D2;
+    }
+
+    .rps-result {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 35px;
+      font-size: 38px;
+    }
+
+    .rps-result small {
+      display: block;
+      font-size: 11px;
+      color: var(--muted);
+      margin-top: 7px;
+    }
+
+    .score {
+      font-size: 13px;
+      font-weight: 800;
+    }
+
+    /* COIN */
+
+    .coin {
+      width: 110px;
+      height: 110px;
+      background: #F7E3A9;
+      border: 6px solid #E7C979;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-family: 'DotGothic16', monospace;
+      font-size: 20px;
+      color: #9A7A36;
+      box-shadow: 4px 4px 0 #E7E0D2;
+    }
+
+    .coin.flipping {
+      animation: flip .7s ease-in-out;
+    }
+
+    @keyframes flip {
+      0% {
+        transform: rotateY(0deg) translateY(0);
+      }
+
+      25% {
+        transform: rotateY(180deg) translateY(-35px);
+      }
+
+      50% {
+        transform: rotateY(360deg) translateY(0);
+      }
+
+      75% {
+        transform: rotateY(540deg) translateY(-25px);
+      }
+
+      100% {
+        transform: rotateY(720deg) translateY(0);
+      }
+    }
+
+    @media (max-width: 600px) {
+      header {
+        padding: 18px 16px;
+      }
+
+      main {
+        padding: 20px 17px 50px;
+      }
+
+      .game-grid {
+        grid-template-columns: 1fr;
+        gap: 12px;
+      }
+
+      .game-card {
+        display: grid;
+        grid-template-columns: 65px 1fr;
+        grid-template-rows: auto auto;
+        text-align: left;
+        align-items: center;
+        padding: 14px;
+        column-gap: 12px;
+      }
+
+      .game-icon {
+        grid-row: span 2;
+        margin: 0;
+        font-size: 39px;
+        text-align: center;
+      }
+
+      .game-card h3 {
+        margin: 0;
+      }
+
+      .game-count {
+        display: none;
+      }
+
+      .hero {
+        padding: 20px 0 30px;
+      }
+
+      .play-area {
+        padding: 24px 12px;
+      }
+
+      .choice-btn {
+        width: 70px;
+        height: 70px;
+        font-size: 32px;
+      }
+
+      .rps-result {
+        gap: 20px;
+      }
+    }
+
+
+    /* Coin flip */
+    .coin-stage {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+      padding: 25px 10px;
+    }
+
+    .coin-scene {
+      width: 180px;
+      height: 180px;
+      perspective: 800px;
+    }
+
+    .coin {
+      width: 100%;
+      height: 100%;
+      position: relative;
+      transform-style: preserve-3d;
+      transition: transform 1s cubic-bezier(.2, .7, .3, 1);
+    }
+
+    .coin-face {
+      position: absolute;
+      inset: 0;
+      border-radius: 50%;
+      border: 7px solid #d8b96d;
+      background: #fff4d9;
+      box-shadow:
+        inset 0 0 0 4px #f3dca5,
+        0 8px 0 #c5a45d,
+        0 12px 20px #00000020;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      backface-visibility: hidden;
+      overflow: hidden;
+    }
+
+    .coin-back {
+      transform: rotateY(180deg);
+      background: #fce4ed;
+    }
+
+    .coin-face svg {
+      width: 112px;
+      height: 112px;
+      image-rendering: pixelated;
+    }
+
+    .coin-result {
+      min-height: 30px;
+      color: #88749f;
+      font-weight: bold;
+      font-size: 18px;
+      letter-spacing: 2px;
+    }
+
+    .coin-button {
+      border: 2px solid #8f82b8;
+      background: #c9c0e8;
+      color: #51466f;
+      padding: 12px 30px;
+      border-radius: 12px;
+      font-weight: bold;
+      cursor: pointer;
+      box-shadow: 0 4px 0 #9588bd;
+      transition: transform .15s;
+    }
+
+    .coin-button:active {
+      transform: translateY(3px);
+      box-shadow: 0 1px 0 #9588bd;
+    }
+
+    .coin-button:disabled {
+      opacity: .6;
+      cursor: wait;
+    }
+  </style>
+</head>
+
+<body>
+
+  <header>
+    <div class="logo" onclick="goHome()">little luck club.</div>
+    <div class="header-actions">
+      <button class="small-btn" id="languageBtn" onclick="toggleLanguage()">EN</button>
+      <button class="small-btn" id="soundBtn" onclick="toggleSound()">♪ ON</button>
+    </div>
+  </header>
+
+  <main>
+
+    <!-- HOME PAGE -->
+
+    <section id="homeScreen">
+
+      <div class="hero">
+        <div class="hero-art">🎲</div>
+        <h1 id="heroTitle">今天想玩什麼？</h1>
+        <p id="heroSubtitle">一點小遊戲，給無聊的時光。</p>
+      </div>
+
+      <div class="section-title" id="sectionTitle">✦ 選擇你的遊戲</div>
+
+      <div class="game-grid">
+
+        <div class="game-card" onclick="openGame('dice')">
+          <div class="game-icon">🎲</div>
+          <h3 id="diceName">隨機骰子</h3>
+          <p id="diceDesc">交給運氣決定。</p>
+          <div class="game-count" id="diceCount">PLAYED 0 TIMES</div>
+        </div>
+
+        <div class="game-card" onclick="openGame('rps')">
+          <div class="game-icon">✌️</div>
+          <h3 id="rpsName">剪刀石頭布</h3>
+          <p id="rpsDesc">來一場小小對決。</p>
+          <div class="game-count" id="rpsCount">PLAYED 0 TIMES</div>
+        </div>
+
+        <div class="game-card" onclick="openGame('coin')">
+          <div class="game-icon">🪙</div>
+          <h3 id="coinName">正反面</h3>
+          <p id="coinDesc">正面還是反面？</p>
+          <div class="game-count" id="coinCount">PLAYED 0 TIMES</div>
+        </div>
+
+      </div>
+
+      <div class="extras">
+        <button class="action-btn" onclick="randomGame()" id="randomBtn">
+          ✦ 隨機幫我選一個
+        </button>
+      </div>
+
+    </section>
+
+
+    <!-- GAME PAGE -->
+
+    <section id="gameScreen">
+
+      <button class="back-btn" onclick="goHome()" id="backBtn">
+        ← 返回首頁
+      </button>
+
+      <h2 class="game-title" id="gameTitle"></h2>
+      <p class="game-subtitle" id="gameSubtitle"></p>
+
+      <div class="play-area" id="gameArea"></div>
+
+    </section>
+
+  </main>
+
+  <footer id="footerText">
+    ✦ made for little moments of fun ✦
+  </footer>
+
+
+  <script>
+
+    // =================================
+    // LANGUAGE
+    // =================================
+
+    let lang = 'zh';
+
+    const translations = {
+      zh: {
+        heroTitle: '今天想玩什麼？',
+        heroSubtitle: '一點小遊戲，給無聊的時光。',
+        sectionTitle: '✦ 選擇你的遊戲',
+        diceName: '隨機骰子',
+        diceDesc: '交給運氣決定。',
+        rpsName: '剪刀石頭布',
+        rpsDesc: '來一場小小對決。',
+        coinName: '正反面',
+        coinDesc: '正面還是反面？',
+        randomBtn: '✦ 隨機幫我選一個',
+        backBtn: '← 返回首頁',
+        footerText: '✦ 為生活增添一點小樂趣 ✦',
+        played: '已遊玩 {n} 次',
+        diceTitle: '隨機骰子',
+        diceSubtitle: '讓運氣替你做決定。',
+        diceLabel: '骰子數量',
+        roll: '擲骰子',
+        total: '總點數：',
+        rpsTitle: '剪刀石頭布',
+        rpsSubtitle: '你能贏過電腦嗎？',
+        choose: '請選擇你的出拳！',
+        rock: '石頭',
+        paper: '布',
+        scissors: '剪刀',
+        you: '你',
+        computer: '電腦',
+        win: '你贏了！',
+        lose: '電腦贏了！',
+        draw: '平手！',
+        score: '你 {a} : {b} 電腦',
+        again: '再玩一次',
+        coinTitle: '正反面',
+        coinSubtitle: '有時候，就交給運氣吧。',
+        flip: '拋硬幣',
+        heads: '正面',
+        tails: '反面',
+        rolling: '擲骰中...',
+        flipping: '硬幣翻轉中...',
+        pick: '隨機選中了：'
+      },
+
+      en: {
+        heroTitle: 'What shall we play?',
+        heroSubtitle: 'A little game for your little break.',
+        sectionTitle: '✦ PICK YOUR GAME',
+        diceName: 'Dice Roll',
+        diceDesc: 'Leave it to chance.',
+        rpsName: 'Rock Paper Scissors',
+        rpsDesc: 'Let the game begin.',
+        coinName: 'Coin Flip',
+        coinDesc: 'Heads or tails?',
+        randomBtn: '✦ Surprise me!',
+        backBtn: '← Back to Home',
+        footerText: '✦ made for little moments of fun ✦',
+        played: 'PLAYED {n} TIMES',
+        diceTitle: 'Dice Roll',
+        diceSubtitle: 'Let luck decide for you.',
+        diceLabel: 'Number of dice',
+        roll: 'ROLL DICE',
+        total: 'Total: ',
+        rpsTitle: 'Rock Paper Scissors',
+        rpsSubtitle: 'Can you beat the computer?',
+        choose: 'Make your choice!',
+        rock: 'Rock',
+        paper: 'Paper',
+        scissors: 'Scissors',
+        you: 'YOU',
+        computer: 'COMPUTER',
+        win: 'You win!',
+        lose: 'Computer wins!',
+        draw: 'It is a draw!',
+        score: 'You {a} : {b} Computer',
+        again: 'Play Again',
+        coinTitle: 'Coin Flip',
+        coinSubtitle: 'Sometimes, leave it to chance.',
+        flip: 'FLIP COIN',
+        heads: 'HEADS',
+        tails: 'TAILS',
+        rolling: 'Rolling...',
+        flipping: 'Flipping...',
+        pick: 'Your random game: '
+      }
+    };
+
+    function t(key) {
+      return translations[lang][key];
+    }
+
+    function toggleLanguage() {
+      lang = lang === 'zh' ? 'en' : 'zh';
+
+      document.documentElement.lang = lang === 'zh' ? 'zh-Hant' : 'en';
+      document.getElementById('languageBtn').textContent =
+        lang === 'zh' ? 'EN' : '中文';
+
+      updateHome();
+      if (currentGame) openGame(currentGame);
+    }
+
+    function updateHome() {
+      const keys = [
+        'heroTitle', 'heroSubtitle', 'sectionTitle',
+        'diceName', 'diceDesc', 'rpsName', 'rpsDesc',
+        'coinName', 'coinDesc', 'randomBtn',
+        'backBtn', 'footerText'
+      ];
+
+      keys.forEach(key => {
+        const el = document.getElementById(key);
+        if (el) el.textContent = t(key);
+      });
+
+      updateCounts();
+    }
+
+
+    // =================================
+    // SOUND
+    // =================================
+
+    let soundOn = true;
+
+    function toggleSound() {
+      soundOn = !soundOn;
+
+      document.getElementById('soundBtn').textContent =
+        soundOn ? '♪ ON' : '♪ OFF';
+
+      if (soundOn) playSound(500, 0.08);
+    }
+
+    function playSound(freq = 450, duration = 0.08) {
+      if (!soundOn) return;
+
+      try {
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContext) return;
+
+        const ctx = new AudioContext();
+        const oscillator = ctx.createOscillator();
+        const gain = ctx.createGain();
+
+        oscillator.connect(gain);
+        gain.connect(ctx.destination);
+
+        oscillator.frequency.value = freq;
+        oscillator.type = 'square';
+
+        gain.gain.setValueAtTime(0.035, ctx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(
+          0.001, ctx.currentTime + duration
+        );
+
+        oscillator.start();
+        oscillator.stop(ctx.currentTime + duration);
+
+        oscillator.onended = () => ctx.close();
+      } catch (e) { }
+    }
+
+
+    // =================================
+    // NAVIGATION & COUNTERS
+    // =================================
+
+    let currentGame = null;
+
+    let counts = JSON.parse(localStorage.getItem('littleLuckCounts')) || {
+      dice: 0,
+      rps: 0,
+      coin: 0
+    };
+
+    function updateCounts() {
+      ['dice', 'rps', 'coin'].forEach(game => {
+        const el = document.getElementById(game + 'Count');
+        if (!el) return;
+
+        el.textContent = lang === 'zh'
+          ? t('played').replace('{n}', counts[game])
+          : t('played').replace('{n}', counts[game]);
+      });
+    }
+
+    function addCount(game) {
+      counts[game]++;
+      localStorage.setItem('littleLuckCounts', JSON.stringify(counts));
+      updateCounts();
+    }
+
+    function goHome() {
+      currentGame = null;
+
+      document.getElementById('homeScreen').style.display = 'block';
+      document.getElementById('gameScreen').style.display = 'none';
+
+      updateHome();
+    }
+
+    function openGame(game) {
+      currentGame = game;
+
+      document.getElementById('homeScreen').style.display = 'none';
+      document.getElementById('gameScreen').style.display = 'block';
+
+      document.getElementById('backBtn').textContent = t('backBtn');
+
+      const area = document.getElementById('gameArea');
+
+      if (game === 'dice') renderDice(area);
+      if (game === 'rps') renderRPS(area);
+      if (game === 'coin') renderCoin(area);
+
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function randomGame() {
+      const games = ['dice', 'rps', 'coin'];
+      const selected = games[Math.floor(Math.random() * games.length)];
+
+      const names = {
+        dice: t('diceName'),
+        rps: t('rpsName'),
+        coin: t('coinName')
+      };
+
+      alert(t('pick') + names[selected]);
+      openGame(selected);
+    }
+
+
+    // =================================
+    // DICE GAME
+    // =================================
+
+
+    function renderDice(area) {
+      document.getElementById('gameTitle').textContent = t('diceTitle');
+      document.getElementById('gameSubtitle').textContent = t('diceSubtitle');
+
+      area.innerHTML = `
+    <div class="dice-controls">
+      <label for="diceAmount">${t('diceLabel')}</label>
+      <select id="diceAmount" onchange="updateDiceAmount()">
+        ${[1, 2, 3, 4, 5, 6].map(n =>
+        `<option value="${n}">${n}</option>`
+      ).join('')}
+      </select>
+    </div>
+
+    <div class="dice-container" id="diceContainer"></div>
+
+    <div class="total" id="diceTotal"></div>
+
+    <button class="primary-btn" id="rollBtn" onclick="rollDice()">
+      ${t('roll')}
+    </button>
+  `;
+
+      updateDiceAmount();
+    }
+
+    // 當使用者更改骰子數量時，更新畫面
+    function updateDiceAmount() {
+      const amount = Number(document.getElementById('diceAmount').value);
+      const container = document.getElementById('diceContainer');
+
+      container.innerHTML = createDice(amount);
+
+      document.getElementById('diceTotal').textContent = '';
+    }
+
+    function createDice(number) {
+      return Array.from({ length: number }, () =>
+        '<div class="die"></div>'
+      ).join('');
+    }
+
+    function showDie(element, value) {
+      const positions = {
+        1: [4],
+        2: [0, 8],
+        3: [0, 4, 8],
+        4: [0, 2, 6, 8],
+        5: [0, 2, 4, 6, 8],
+        6: [0, 2, 3, 5, 6, 8]
+      };
+
+      element.innerHTML = Array.from({ length: 9 }, (_, i) =>
+        positions[value].includes(i)
+          ? '<span class="pip"></span>'
+          : '<span></span>'
+      ).join('');
+    }
+
+    function rollDice() {
+      const btn = document.getElementById('rollBtn');
+      if (btn.disabled) return;
+
+      const amount = Number(document.getElementById('diceAmount').value);
+      const container = document.getElementById('diceContainer');
+      const totalEl = document.getElementById('diceTotal');
+
+      btn.disabled = true;
+      btn.textContent = t('rolling');
+      totalEl.textContent = '';
+
+      const dice = Array.from(container.querySelectorAll('.die'));
+
+      dice.forEach(die => die.classList.add('rolling'));
+
+      playSound(350, 0.15);
+
+      setTimeout(() => {
+        let total = 0;
+
+        dice.forEach(die => {
+          const value = Math.floor(Math.random() * 6) + 1;
+          total += value;
+          die.classList.remove('rolling');
+          showDie(die, value);
+        });
+
+        totalEl.textContent = t('total') + total;
+
+        btn.disabled = false;
+        btn.textContent = t('roll');
+
+        addCount('dice');
+        playSound(650, 0.12);
+
+      }, 650);
+    }
+
+
+    // =================================
+    // ROCK PAPER SCISSORS
+    // =================================
+
+    let playerScore = 0;
+    let computerScore = 0;
+
+    function renderRPS(area) {
+      playerScore = 0;
+      computerScore = 0;
+
+      document.getElementById('gameTitle').textContent = t('rpsTitle');
+      document.getElementById('gameSubtitle').textContent = t('rpsSubtitle');
+
+      area.innerHTML = `
+    <div class="result" id="rpsMessage">${t('choose')}</div>
+
+    <div class="rps-options">
+      <button class="choice-btn" onclick="playRPS('rock')" aria-label="Rock">✊</button>
+      <button class="choice-btn" onclick="playRPS('paper')" aria-label="Paper">✋</button>
+      <button class="choice-btn" onclick="playRPS('scissors')" aria-label="Scissors">✌️</button>
+    </div>
+
+    <div class="rps-result" id="rpsResult">
+      <div>❔<small>${t('you')}</small></div>
+      <div>❔<small>${t('computer')}</small></div>
+    </div>
+
+    <div class="score" id="rpsScore">${t('score').replace('{a}', 0).replace('{b}', 0)}</div>
+
+    <button class="primary-btn" onclick="resetRPS()">${t('again')}</button>
+  `;
+    }
+
+    function playRPS(player) {
+      const choices = ['rock', 'paper', 'scissors'];
+      const computer = choices[Math.floor(Math.random() * 3)];
+
+      const icons = {
+        rock: '✊',
+        paper: '✋',
+        scissors: '✌️'
+      };
+
+      let result;
+
+      if (player === computer) {
+        result = 'draw';
+      } else if (
+        (player === 'rock' && computer === 'scissors') ||
+        (player === 'paper' && computer === 'rock') ||
+        (player === 'scissors' && computer === 'paper')
+      ) {
+        result = 'win';
+        playerScore++;
+      } else {
+        result = 'lose';
+        computerScore++;
+      }
+
+      document.getElementById('rpsMessage').textContent = t(result);
+
+      document.getElementById('rpsResult').innerHTML = `
+    <div>${icons[player]}<small>${t('you')}</small></div>
+    <div>${icons[computer]}<small>${t('computer')}</small></div>
+  `;
+
+      document.getElementById('rpsScore').textContent =
+        t('score')
+          .replace('{a}', playerScore)
+          .replace('{b}', computerScore);
+
+      addCount('rps');
+      playSound(result === 'win' ? 700 : 400, 0.12);
+    }
+
+    function resetRPS() {
+      playerScore = 0;
+      computerScore = 0;
+
+      document.getElementById('rpsMessage').textContent = t('choose');
+
+      document.getElementById('rpsResult').innerHTML = `
+    <div>❔<small>${t('you')}</small></div>
+    <div>❔<small>${t('computer')}</small></div>
+  `;
+
+      document.getElementById('rpsScore').textContent =
+        t('score').replace('{a}', 0).replace('{b}', 0);
+    }
+
+
+    // =================================
+    // COIN FLIP
+    // =================================
+
+
+    function renderCoin(area) {
+      document.getElementById('gameTitle').textContent = 'Coin Flip';
+      document.getElementById('gameSubtitle').textContent =
+        'A little luck, one flip at a time.';
+
+      area.innerHTML = `
+    <div class="coin-stage">
+
+      <div class="coin-scene">
+        <div class="coin" id="coin">
+
+          <!-- 正面：像素人物 -->
+          <div class="coin-face">
+            <svg viewBox="0 0 16 16" shape-rendering="crispEdges">
+              <!-- 頭髮 -->
+              <rect x="4" y="2" width="8" height="2" fill="#60445e"/>
+              <rect x="3" y="4" width="2" height="5" fill="#60445e"/>
+              <rect x="11" y="4" width="2" height="5" fill="#60445e"/>
+              <rect x="5" y="3" width="6" height="1" fill="#60445e"/>
+
+              <!-- 臉 -->
+              <rect x="5" y="4" width="6" height="6" fill="#f2bd9b"/>
+              <rect x="4" y="6" width="1" height="2" fill="#f2bd9b"/>
+              <rect x="11" y="6" width="1" height="2" fill="#f2bd9b"/>
+              <rect x="6" y="10" width="4" height="2" fill="#f2bd9b"/>
+
+              <!-- 眼睛 -->
+              <rect x="6" y="6" width="1" height="1" fill="#463747"/>
+              <rect x="9" y="6" width="1" height="1" fill="#463747"/>
+
+              <!-- 嘴巴 -->
+              <rect x="7" y="8" width="2" height="1" fill="#c97878"/>
+
+              <!-- 衣服 -->
+              <rect x="3" y="11" width="10" height="4" fill="#a9c9e8"/>
+
+              <!-- 裝飾星星 -->
+              <rect x="1" y="4" width="1" height="1" fill="#e9bd68"/>
+              <rect x="14" y="10" width="1" height="1" fill="#e9bd68"/>
+            </svg>
+          </div>
+
+          <!-- 反面：像素花朵 -->
+          <div class="coin-face coin-back">
+            <svg viewBox="0 0 16 16" shape-rendering="crispEdges">
+              <!-- 花瓣 -->
+              <rect x="6" y="1" width="4" height="3" fill="#e9a8c5"/>
+              <rect x="3" y="4" width="3" height="4" fill="#e9a8c5"/>
+              <rect x="10" y="4" width="3" height="4" fill="#e9a8c5"/>
+              <rect x="6" y="8" width="4" height="3" fill="#e9a8c5"/>
+
+              <!-- 花瓣高光 -->
+              <rect x="7" y="2" width="2" height="1" fill="#f8d3e4"/>
+              <rect x="4" y="5" width="1" height="2" fill="#f8d3e4"/>
+              <rect x="11" y="5" width="1" height="2" fill="#f8d3e4"/>
+              <rect x="7" y="9" width="2" height="1" fill="#f8d3e4"/>
+
+              <!-- 花心 -->
+              <rect x="6" y="4" width="4" height="4" fill="#f5d36f"/>
+              <rect x="7" y="5" width="2" height="2" fill="#dcae4c"/>
+
+              <!-- 花莖 -->
+              <rect x="7" y="11" width="2" height="4" fill="#7caa79"/>
+
+              <!-- 葉子 -->
+              <rect x="4" y="11" width="3" height="2" fill="#91bd8c"/>
+              <rect x="9" y="12" width="3" height="2" fill="#91bd8c"/>
+
+              <!-- 裝飾 -->
+              <rect x="1" y="3" width="1" height="1" fill="#d8b96d"/>
+              <rect x="14" y="7" width="1" height="1" fill="#d8b96d"/>
+              <rect x="2" y="11" width="1" height="1" fill="#d8b96d"/>
+            </svg>
+          </div>
+
+        </div>
+      </div>
+
+      <div class="coin-result" id="coinResult">
+        HEADS OR TAILS?
+      </div>
+
+      <button class="coin-button" id="coinButton"
+        onclick="flipCoin()">
+        FLIP THE COIN
+      </button>
+
+    </div>
+  `;
+    }
+
+    function flipCoin() {
+      const coin = document.getElementById('coin');
+      const resultText = document.getElementById('coinResult');
+      const button = document.getElementById('coinButton');
+
+      if (!coin || button.disabled) return;
+
+      button.disabled = true;
+      resultText.textContent = 'FLIPPING...';
+
+      // 隨機決定正反面
+      const isHeads = Math.random() < 0.5;
+
+      // 正面轉一圈，反面轉半圈
+      const rotation = isHeads ? 360 : 180;
+
+      coin.style.transform = `rotateY(${rotation + 720}deg)`;
+
+      setTimeout(() => {
+        resultText.textContent = isHeads
+          ? 'HEADS — 人物'
+          : 'TAILS — 花朵';
+
+        button.disabled = false;
+      }, 1100);
+    }
+
+
+    // =================================
+    // INITIALIZE
+    // =================================
+
+    updateHome();
+
+  </script>
+
+</body>
+
+</html>
